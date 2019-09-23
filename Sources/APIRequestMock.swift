@@ -62,6 +62,8 @@ public final class APIRequestMockURLProtocol: URLProtocol {
 public enum APIRequestMock {
 	
     /// Add mocks for URLSession configuration.
+    /// - parameter resoureNames: Array of json files to be load from Bundle.
+    /// - parameter configuration: Configuration where mockup will be inserted.
     public static func register( resourceNames: [ String ], in configuration: URLSessionConfiguration ) {
         var protocolClasses = configuration.protocolClasses ?? []
         loadItems( resourceNames: resourceNames )
