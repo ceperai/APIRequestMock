@@ -27,14 +27,14 @@ extension APIRequestMockItem {
 		case uri, comment, value, enabled
 	}
 	
-	init?( from data: Data ) {
+	public init?( from data: Data ) {
 		let json = try? JSONSerialization.jsonObject(with: data, options: [])
 		guard let items = json as? [String: Any] else { return nil }
 		
 		self.init( from: items )
 	}
 
-	init?( from json: [String: Any]) {
+	public init?( from json: [String: Any]) {
 		if let uri = json[ CodingKeys.uri.stringValue ] as? String {
 			self.uri = [ uri ]
 		} else if let uri = json[ CodingKeys.uri.stringValue ] as? [ String ] {
@@ -55,12 +55,12 @@ extension APIRequestMockItem {
 	}
 	
 	/// Получить массив заглушек из массива байтов.
-	static func decode( from data: Data ) throws -> [ APIRequestMockItem ] {
+	public static func decode( from data: Data ) throws -> [ APIRequestMockItem ] {
 
 		let json = try JSONSerialization.jsonObject(with: data, options: [])
 		
 		guard let result = (json as? [ [String: Any] ])?.compactMap({ APIRequestMockItem( from: $0 ) }) else {
-			throw NSError(domain: "CamberDrive", code: 0, userInfo: nil )
+            throw NSError(domain: "APIRequestMock", code: 0, userInfo: nil )
 		}
 
 		return result
@@ -70,12 +70,12 @@ extension APIRequestMockItem {
 extension APIRequestMockItem {
 
 	/// Возвращает `true` если урла совпадает с одной из урл в шаблонах.
-	func isMatch( to uri: URL ) -> Bool {
+	public func isMatch( to uri: URL ) -> Bool {
 		return self.uri.contains { return isMatch( $0, to: uri ) }
 	}
 
 	/// Возвращает `true` если урл запроса совпадает с одной из урл в шаблонах.
-	func isMatch( to request: URLRequest ) -> Bool {
+	public func isMatch( to request: URLRequest ) -> Bool {
 		if let url = request.url {
 			return isMatch( to: url )
 		}
