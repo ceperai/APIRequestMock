@@ -65,21 +65,34 @@ public enum APIRequestMock {
     /// - parameter resoureNames: Array of json files to be load from Bundle.
     /// - parameter configuration: Configuration where mockup will be inserted.
     public static func register( resourceNames: [ String ], in configuration: URLSessionConfiguration ) {
+        guard items.isEmpty else { return }
+        
+        items = resourceNames
+            .compactMap { self.loadItem(from: $0) }
+            .flatMap { $0 }
+        registerMockingProtocol(in: configuration)
+    }
+    
+    /// Add mocks for URLSession configuration.
+    /// - parameter dataset: Array data objects with content of mock files.
+    /// - parameter configuration: Configuration where mockup will be inserted.
+    public static func register( dataset: [ Data ], in configuration: URLSessionConfiguration ) {
+        guard items.isEmpty else { return }
+        
+        items = dataset
+            .compactMap { self.loadItem(from: $0) }
+            .flatMap{ $0 }
+        registerMockingProtocol(in: configuration)
+    }
+    
+    private static func registerMockingProtocol( in configuration: URLSessionConfiguration ) {
         var protocolClasses = configuration.protocolClasses ?? []
-        loadItems( resourceNames: resourceNames )
         protocolClasses.insert(APIRequestMockURLProtocol.self, at: 0)
         configuration.protocolClasses = protocolClasses
     }
     
-    private static func loadItems( resourceNames: [ String ] ) {
-        guard items.isEmpty else { return }
-		items = resourceNames
-			.compactMap { self.loadItem(named: $0) }
-			.flatMap { $0 }
-	}
-	
     /// Load mock items from separate resource file.
-	public static func loadItem( named resourceName: String, extension ext: String = "json" ) -> [ APIRequestMockItem ]? {
+	public static func loadItem( from resourceName: String, extension ext: String = "json" ) -> [ APIRequestMockItem ]? {
 		let bundle = Foundation.Bundle.main
 		let url = bundle.url( forResource: resourceName, withExtension: ext )!
 		
@@ -88,11 +101,23 @@ public enum APIRequestMock {
 			let item = try APIRequestMockItem.decode( from: data )
             print("✅ Load item with url \(url.absoluteString)")
             return item
-		} catch let error as NSError {
+		} catch let error {
 			print("🤬🤬🤬 Load mock error \( error.localizedDescription )")
 			return nil
 		}
 	}
+    
+    /// Load mock item from `Data` with content of mock file.
+    public static func loadItem( from data: Data ) -> [ APIRequestMockItem ]? {
+        do {
+            let item = try APIRequestMockItem.decode( from: data )
+            print("✅ Load item from data (\(data.count))")
+            return item
+        } catch let error {
+            print("🤬🤬🤬 Load mock error \( error.localizedDescription )")
+            return nil
+        }
+    }
 }
 
 private var items: [ APIRequestMockItem ] = []
