@@ -12,13 +12,13 @@ import Foundation
 /// Contains fields of a single request mock.
 public struct APIRequestMockItem {
     /// Array of url-s to be intercepted by this mock item.
-	let uri: [ String ]
+    public let uri: [ String ]
     /// Developer commentaries about this mock.
-	let comment: String?
+	public let comment: String?
     /// Is this mock item enabled for use.
-    let isEnabled: Bool
+    public let isEnabled: Bool
     /// Mock data which will be returned in url response.
-    let value: Data
+    public let value: Data
 }
 
 extension APIRequestMockItem {
