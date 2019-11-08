@@ -17,7 +17,7 @@ public final class APIRequestMockURLProtocol: URLProtocol {
 	
 	public override class func canInit( with request: URLRequest ) -> Bool {
 		if let url = request.url {
-			return items.contains { $0.isMatch(to: url) }
+			return items.contains { $0.isEnabled && $0.isMatch(to: url) }
 		}
 		return false
 	}
