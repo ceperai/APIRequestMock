@@ -19,12 +19,18 @@ public struct APIRequestMockItem {
     public let isEnabled: Bool
     /// Mock data which will be returned in url response.
     public let value: Data
+    /// Response headers.
+    public let responseHeaders: [String: String]?
 }
 
 extension APIRequestMockItem {
 
 	private enum CodingKeys: String, CodingKey {
-		case uri, comment, value, enabled
+		case uri
+        case comment
+        case value
+        case enabled
+        case headers
 	}
 	
 	public init?( from data: Data ) {
@@ -52,6 +58,7 @@ extension APIRequestMockItem {
    
 		self.value = data
 		self.isEnabled = json[ CodingKeys.enabled.stringValue ] as? Bool ?? true
+        self.responseHeaders = json[ CodingKeys.headers.stringValue ] as? [String: String]
 	}
 	
 	/// Получить массив заглушек из массива байтов.

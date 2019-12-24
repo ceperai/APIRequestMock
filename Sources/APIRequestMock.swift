@@ -3,9 +3,8 @@
 //  APIRequestMock
 //
 //  Created by Sergey Pestov on 10/01/2018.
-//  Copyright © 2018 assignment. All rights reserved.
 //
-//	Основные источники знаний:
+//	Knowledge base:
 //	https://yahooeng.tumblr.com/post/141143817861/using-nsurlprotocol-for-testing
 //	https://github.com/ksteigerwald/MockAlamofire/blob/master/MockAlamofire/MockingProtocol.swift
 //	https://github.com/Alamofire/Alamofire/blob/master/Tests/URLProtocolTests.swift
@@ -43,7 +42,7 @@ public final class APIRequestMockURLProtocol: URLProtocol {
 				url: url,
 				statusCode: 200,
 				httpVersion: "HTTP/1.1",
-				headerFields: nil
+                headerFields: item.responseHeaders
 			) else {
 				return
 		}
