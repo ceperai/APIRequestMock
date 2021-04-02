@@ -12,7 +12,7 @@
 
 import Foundation
 
-public final class APIRequestMockURLProtocol: URLProtocol {
+final class APIRequestMockURLProtocol: URLProtocol {
 	
 	public override class func canInit( with request: URLRequest ) -> Bool {
 		if let url = request.url {

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /// Contains fields of a single request mock.
 public struct APIRequestMockItem {
     /// Array of url-s to be intercepted by this mock item.
@@ -24,7 +23,6 @@ public struct APIRequestMockItem {
 }
 
 extension APIRequestMockItem {
-
 	private enum CodingKeys: String, CodingKey {
 		case uri
         case comment
@@ -61,7 +59,7 @@ extension APIRequestMockItem {
         self.responseHeaders = json[ CodingKeys.headers.stringValue ] as? [String: String]
 	}
 	
-	/// Получить массив заглушек из массива байтов.
+	/// Retrieve array of mocked responses from data.
 	public static func decode( from data: Data ) throws -> [ APIRequestMockItem ] {
 
 		let json = try JSONSerialization.jsonObject(with: data, options: [])
